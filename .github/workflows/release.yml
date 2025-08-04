@@ -1,0 +1,142 @@
+name: Create Release
+
+on:
+  push:
+    tags:
+      - 'v*'
+
+permissions:
+  contents: write
+
+jobs:
+  # Full test suite before creating release
+  pre-release-tests:
+    name: Pre-release Tests
+    runs-on: ubuntu-latest
+    
+    strategy:
+      matrix:
+        node-version: [18.x, 20.x, 22.x]
+    
+    steps:
+    - uses: actions/checkout@v4
+    
+    - name: Use Node.js ${{ matrix.node-version }}
+      uses: actions/setup-node@v4
+      with:
+        node-version: ${{ matrix.node-version }}
+        cache: 'npm'
+    
+    - name: Install dependencies
+      run: npm ci
+    
+    - name: Run linting
+      run: npm run lint
+    
+    - name: Run type checking
+      run: npm run typecheck
+    
+    - name: Run tests
+      run: npm run test:run
+    
+    - name: Build package
+      run: npm run build
+
+  # Quality and security checks
+  quality-checks:
+    name: Quality & Security Checks
+    runs-on: ubuntu-latest
+    
+    steps:
+    - uses: actions/checkout@v4
+    
+    - name: Use Node.js 20.x
+      uses: actions/setup-node@v4
+      with:
+        node-version: '20.x'
+        cache: 'npm'
+    
+    - name: Install dependencies
+      run: npm ci
+    
+    - name: Check code formatting
+      run: npm run format:check
+    
+    - name: Run test coverage
+      run: npm run test:coverage
+    
+    - name: Security audit
+      run: npm audit --audit-level=moderate
+    
+    - name: Package size check
+      run: npm pack --dry-run
+
+  # Create release only after all checks pass
+  create-release:
+    name: Create GitHub Release
+    runs-on: ubuntu-latest
+    needs: [pre-release-tests, quality-checks]
+    
+    steps:
+    - uses: actions/checkout@v4
+      with:
+        fetch-depth: 0 # Fetch all history for changelog generation
+    
+    - name: Use Node.js 20.x
+      uses: actions/setup-node@v4
+      with:
+        node-version: '20.x'
+        cache: 'npm'
+    
+    - name: Install dependencies
+      run: npm ci
+    
+    - name: Build package
+      run: npm run build
+    
+    - name: Extract version from tag
+      id: version
+      run: echo "version=${GITHUB_REF#refs/tags/v}" >> $GITHUB_OUTPUT
+    
+    - name: Generate changelog
+      id: changelog
+      run: |
+        # Extract changelog for this version (basic implementation)
+        if [ -f CHANGELOG.md ]; then
+          # Get changelog section for this version
+          sed -n "/## \[${{ steps.version.outputs.version }}\]/,/## \[/p" CHANGELOG.md | sed '$d' > release_notes.md
+          
+          # If no specific changelog found, create a generic one
+          if [ ! -s release_notes.md ]; then
+            echo "## Changes in v${{ steps.version.outputs.version }}" > release_notes.md
+            echo "" >> release_notes.md
+            echo "See [CHANGELOG.md](./CHANGELOG.md) for detailed changes." >> release_notes.md
+          fi
+        else
+          echo "## Release v${{ steps.version.outputs.version }}" > release_notes.md
+          echo "" >> release_notes.md
+          echo "🚀 New release available!" >> release_notes.md
+        fi
+    
+    - name: Create Release
+      uses: actions/create-release@v1
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      with:
+        tag_name: ${{ github.ref }}
+        release_name: Release v${{ steps.version.outputs.version }}
+        body_path: ./release_notes.md
+        draft: false
+        prerelease: false
+    
+    - name: Upload build artifacts to release
+      uses: actions/upload-artifact@v4
+      with:
+        name: release-artifacts-v${{ steps.version.outputs.version }}
+        path: |
+          dist/
+          package.json
+          README.md
+          CHANGELOG.md
+          LICENSE
+        retention-days: 90

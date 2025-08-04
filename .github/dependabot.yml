@@ -1,0 +1,51 @@
+version: 2
+updates:
+  # Enable version updates for npm
+  - package-ecosystem: "npm"
+    directory: "/"
+    schedule:
+      interval: "daily"
+      time: "04:00"
+    # Allow up to 10 open pull requests for npm dependencies
+    open-pull-requests-limit: 10
+    # Group all patch updates into a single PR
+    groups:
+      patch-updates:
+        patterns:
+          - "*"
+        update-types:
+          - "patch"
+      minor-updates:
+        patterns:
+          - "*"
+        update-types:
+          - "minor"
+    # Auto-merge configuration
+    reviewers:
+      - "dependabot[bot]"
+    assignees:
+      - "dependabot[bot]"
+    # Commit message preferences
+    commit-message:
+      prefix: "chore"
+      prefix-development: "chore"
+      include: "scope"
+
+  # Enable version updates for GitHub Actions
+  - package-ecosystem: "github-actions"
+    directory: "/"
+    schedule:
+      interval: "weekly"
+      day: "monday"
+      time: "04:00"
+    # Allow up to 5 open pull requests for GitHub Actions
+    open-pull-requests-limit: 5
+    # Auto-merge configuration
+    reviewers:
+      - "dependabot[bot]"
+    assignees:
+      - "dependabot[bot]"
+    # Commit message preferences
+    commit-message:
+      prefix: "ci"
+      include: "scope"
