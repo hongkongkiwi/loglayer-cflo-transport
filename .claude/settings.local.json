@@ -27,7 +27,8 @@
       "Bash(pnpm run test:*)",
       "Bash(nvm use:*)",
       "Bash(nvm install:*)",
-      "Bash(source:*)"
+      "Bash(source:*)",
+      "Bash(ls:*)"
     ],
     "deny": []
   }
