@@ -118,23 +118,31 @@ jobs:
           echo "🚀 New release available!" >> release_notes.md
         fi
     
+    - name: Create npm package
+      run: npm pack
+    
     - name: Create Release
-      uses: actions/create-release@v1
-      env:
-        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      uses: softprops/action-gh-release@v2
       with:
-        tag_name: ${{ github.ref }}
-        release_name: Release v${{ steps.version.outputs.version }}
+        name: Release v${{ steps.version.outputs.version }}
         body_path: ./release_notes.md
         draft: false
         prerelease: false
+        files: |
+          hongkongkiwi-loglayer-cflo-transport-*.tgz
+          dist/**/*
+        fail_on_unmatched_files: false
+        generate_release_notes: true
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
     
-    - name: Upload build artifacts to release
+    - name: Upload build artifacts
       uses: actions/upload-artifact@v4
       with:
         name: release-artifacts-v${{ steps.version.outputs.version }}
         path: |
           dist/
+          hongkongkiwi-loglayer-cflo-transport-*.tgz
           package.json
           README.md
           CHANGELOG.md

@@ -68,7 +68,7 @@ jobs:
       run: npm audit --audit-level=moderate
 
   # Publish only after all tests pass
-  publish:
+  publish-npm:
     name: Publish to NPM
     runs-on: ubuntu-latest
     needs: [test-before-publish, quality-checks]
@@ -102,3 +102,58 @@ jobs:
         echo "✅ Package published successfully to NPM"
         echo "📦 Version: $(node -p "require('./package.json').version")"
         echo "🔗 NPM URL: https://www.npmjs.com/package/@loglayer/cflo-transport"
+  
+  # Publish to GitHub Packages
+  publish-github:
+    name: Publish to GitHub Packages
+    runs-on: ubuntu-latest
+    needs: [test-before-publish, quality-checks]
+    
+    steps:
+    - uses: actions/checkout@v4
+    
+    - name: Use Node.js 20.x
+      uses: actions/setup-node@v4
+      with:
+        node-version: '20.x'
+        registry-url: 'https://npm.pkg.github.com'
+        cache: 'npm'
+    
+    - name: Install dependencies
+      run: npm ci
+    
+    - name: Build package
+      run: npm run build
+    
+    - name: Configure package for GitHub registry
+      run: |
+        # Create a copy of package.json for GitHub Packages
+        cp package.json package.json.bak
+        # Update the package name to include the scope
+        node -e "
+        const pkg = require('./package.json');
+        pkg.name = '@hongkongkiwi/' + pkg.name.split('/').pop();
+        pkg.publishConfig = { registry: 'https://npm.pkg.github.com' };
+        require('fs').writeFileSync('./package.json', JSON.stringify(pkg, null, 2));
+        "
+    
+    - name: Verify package contents
+      run: npm pack --dry-run
+    
+    - name: Publish to GitHub Packages
+      run: npm publish
+      env:
+        NODE_AUTH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+    
+    - name: Restore original package.json
+      if: always()
+      run: |
+        if [ -f package.json.bak ]; then
+          mv package.json.bak package.json
+        fi
+    
+    - name: Create deployment status
+      run: |
+        echo "✅ Package published successfully to GitHub Packages"
+        echo "📦 Version: $(node -p "require('./package.json').version")"
+        echo "🔗 GitHub Packages URL: https://github.com/hongkongkiwi/loglayer-cflo/packages"
