@@ -42,6 +42,9 @@
   },
   "license": "MIT",
   "packageManager": "pnpm@9.0.0",
+  "engines": {
+    "node": ">=20.0.0"
+  },
   "peerDependencies": {
     "@loglayer/transport": "^2.0.0",
     "cflo": "^1.0.0",

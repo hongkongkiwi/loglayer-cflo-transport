@@ -23,7 +23,11 @@
       "WebFetch(domain:app.codecov.io)",
       "WebFetch(domain:opensource.org)",
       "WebFetch(domain:d25lcipzij17d.cloudfront.net)",
-      "Bash(rm:*)"
+      "Bash(rm:*)",
+      "Bash(pnpm run test:*)",
+      "Bash(nvm use:*)",
+      "Bash(nvm install:*)",
+      "Bash(source:*)"
     ],
     "deny": []
   }
