@@ -1,5 +1,5 @@
 {
-  "name": "@loglayer/cflo-transport",
+  "name": "@hongkongkiwi/loglayer-cflo-transport",
   "version": "1.0.0",
   "description": "LogLayer transport for cflo - Cloudflare Workers logging library",
   "main": "dist/index.js",
