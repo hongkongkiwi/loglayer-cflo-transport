@@ -6,7 +6,7 @@ Thank you for your interest in contributing! This document provides guidelines f
 
 ### Prerequisites
 - Node.js 18+ (we test on 18, 20, 22)
-- npm 9+
+- pnpm 8+
 - Git
 
 ### Development Setup
@@ -18,12 +18,12 @@ Thank you for your interest in contributing! This document provides guidelines f
 
 2. **Install dependencies**
    ```bash
-   npm install
+   pnpm install
    ```
 
 3. **Run tests to verify setup**
    ```bash
-   npm test
+   pnpm test
    ```
 
 ## 🔄 Development Workflow
@@ -42,13 +42,13 @@ Thank you for your interest in contributing! This document provides guidelines f
 3. **Verify your changes**
    ```bash
    # Run all quality checks
-   npm run lint
-   npm run typecheck
-   npm run test:run
-   npm run build
+   pnpm run lint
+   pnpm run typecheck
+   pnpm run test:run
+   pnpm run build
    
    # Or run everything at once
-   npm run prepublishOnly
+   pnpm run prepublishOnly
    ```
 
 ### Code Style
@@ -80,13 +80,13 @@ Examples:
 ### Running Tests
 ```bash
 # Run tests in watch mode
-npm test
+pnpm test
 
 # Run tests once
-npm run test:run
+pnpm run test:run
 
 # Run with coverage
-npm run test:coverage
+pnpm run test:coverage
 ```
 
 ### Writing Tests

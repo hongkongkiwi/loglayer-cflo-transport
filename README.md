@@ -16,7 +16,7 @@ A LogLayer transport for [cflo](https://github.com/gambonny/cflo) - the speciali
 ## Installation
 
 ```bash
-npm install @hongkongkiwi/loglayer-cflo-transport cflo loglayer
+pnpm install @hongkongkiwi/loglayer-cflo-transport cflo loglayer
 ```
 
 ## Quick Start
