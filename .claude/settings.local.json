@@ -14,7 +14,15 @@
       "Bash(npm run format:check:*)",
       "Bash(npm run format:*)",
       "Bash(npm run typecheck:*)",
-      "Bash(npm run test:coverage:*)"
+      "Bash(npm run test:coverage:*)",
+      "WebFetch(domain:badge.fury.io)",
+      "WebFetch(domain:badge.fury.io)",
+      "WebFetch(domain:codecov.io)",
+      "WebFetch(domain:www.typescriptlang.org)",
+      "WebFetch(domain:www.npmjs.org)",
+      "WebFetch(domain:app.codecov.io)",
+      "WebFetch(domain:opensource.org)",
+      "WebFetch(domain:d25lcipzij17d.cloudfront.net)"
     ],
     "deny": []
   }

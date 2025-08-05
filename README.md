@@ -1,24 +1,29 @@
-# @loglayer/cflo-transport
+# @hongkongkiwi/loglayer-cflo-transport
 
-[![npm version](https://badge.fury.io/js/@loglayer%2Fcflo-transport.svg)](https://badge.fury.io/js/@loglayer%2Fcflo-transport)
-[![CI](https://github.com/hongkongkiwi/loglayer-cflo/workflows/CI/badge.svg)](https://github.com/hongkongkiwi/loglayer-cflo/actions)
-[![codecov](https://codecov.io/gh/hongkongkiwi/loglayer-cflo/branch/main/graph/badge.svg)](https://codecov.io/gh/hongkongkiwi/loglayer-cflo)
-[![TypeScript](https://img.shields.io/badge/%3C%2F%3E-TypeScript-%230074c1.svg)](http://www.typescriptlang.org/)
+[![npm version](https://badge.fury.io/js/@hongkongkiwi%2Floglayer-cflo-transport.svg)](https://badge.fury.io/js/@hongkongkiwi%2Floglayer-cflo-transport)
+[![CI](https://github.com/hongkongkiwi/loglayer-cflo-transport/workflows/CI/badge.svg)](https://github.com/hongkongkiwi/loglayer-cflo-transport/actions)
+[![codecov](https://codecov.io/gh/hongkongkiwi/loglayer-cflo-transport/branch/main/graph/badge.svg)](https://codecov.io/gh/hongkongkiwi/loglayer-cflo-transport)
+[![TypeScript](https://img.shields.io/badge/%3C%2F%3E-TypeScript-%230074c1.svg)](https://www.typescriptlang.org/)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 
 A LogLayer transport for [cflo](https://github.com/gambonny/cflo) - the specialized logging library for Cloudflare Workers.
 
+## Prerequisites
+
+- Node.js >= 18.0.0
+- TypeScript >= 5.0.0 (for TypeScript projects)
+
 ## Installation
 
 ```bash
-npm install @loglayer/cflo-transport cflo loglayer
+npm install @hongkongkiwi/loglayer-cflo-transport cflo loglayer
 ```
 
 ## Quick Start
 
 ```typescript
 import { LogLayer } from 'loglayer';
-import { CfloTransport } from '@loglayer/cflo-transport';
+import { CfloTransport } from '@hongkongkiwi/loglayer-cflo-transport';
 import { createLogger } from 'cflo';
 
 // Create a cflo logger instance
@@ -232,6 +237,22 @@ npm run dev
 ## License
 
 MIT © [Andy Savage](https://github.com/hongkongkiwi)
+
+## Troubleshooting
+
+### Common Issues
+
+1. **TypeScript errors with cflo types**
+   - Ensure you have `@types/node` installed if using Node.js
+   - Check that your TypeScript version is >= 5.0.0
+
+2. **Log levels not filtering correctly**
+   - Verify that your cflo logger instance is configured with the correct level
+   - Remember that cflo's level filtering happens at runtime in Cloudflare Workers
+
+3. **Metadata not appearing in logs**
+   - Check that `includeMetadata` is set to `true` in the transport config
+   - Ensure you're using `.withMetadata()` or `.withContext()` before logging
 
 ## Related Projects
 

@@ -37,7 +37,7 @@
   ],
   "author": {
     "name": "Andy Savage",
-    "email": "andy@savage.hk",
+    "email": "andy+npm@savage.hk",
     "url": "https://github.com/hongkongkiwi"
   },
   "license": "MIT",
@@ -60,10 +60,10 @@
   },
   "repository": {
     "type": "git",
-    "url": "https://github.com/hongkongkiwi/loglayer-cflo.git"
+    "url": "https://github.com/hongkongkiwi/loglayer-cflo-transport.git"
   },
   "bugs": {
-    "url": "https://github.com/hongkongkiwi/loglayer-cflo/issues"
+    "url": "https://github.com/hongkongkiwi/loglayer-cflo-transport/issues"
   },
-  "homepage": "https://github.com/hongkongkiwi/loglayer-cflo#readme"
+  "homepage": "https://github.com/hongkongkiwi/loglayer-cflo-transport#readme"
 }
